@@ -1,3 +1,8 @@
+<?php
+	include("templates/navigation.php");
+	include("templates/translator.php");
+?>
+
 <!DOCTYPE html>
 <html>
 
@@ -16,12 +21,10 @@
 
 <body class="light-blue lighten-4">
 	<?php include("templates/components/header.html"); ?>
-	<section class="container">
-		<div class="row card-panel light-blue lighten-3">
-			<?php include("templates/navigation.php"); ?>
-			<?php include("templates/translator.php"); ?>			
+		<div class="row">
+			<?php $navigation = new Navigation(); $navigation->render(); ?>
+			<?php $translator = new Translator(); $translator->render(); ?>
 		</div>
-	</section>
 </body>
 
 </html>
