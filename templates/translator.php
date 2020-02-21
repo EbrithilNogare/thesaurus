@@ -14,22 +14,7 @@ class Translator{
 				<div>word ID</div>
 			</div>
 
-			<div class="card-panel light-blue lighten-5">
-				<div class="input-field">
-					<textarea id="textarea1" class="materialize-textarea">original label</textarea>
-					<label for="textarea1">label</label>
-				</div>
-				
-				<div class="input-field">
-					<textarea id="textarea1" class="materialize-textarea">original definition</textarea>
-					<label for="textarea1">definition</label>
-				</div>
-				
-				<div class="input-field">
-					<textarea id="textarea1" class="materialize-textarea">original scope</textarea>
-					<label for="textarea1">scope</label>
-				</div>
-			</div>
+			{$this->translatorFieldset("original Label","original Definition","original Scope")}
 
 			<div>
 				<button class="btn light-blue darken-4 waves-effect waves-light">
@@ -42,25 +27,35 @@ class Translator{
 				</button>
 			</div>
 
-			<div class="card-panel light-blue lighten-5">
-				<div>
-					<div>label</div>
-					<textarea class="materialize-textarea">original label</textarea>
-				</div>
-				
-				<div>
-					<div>definition</div>
-					<textarea
-						class="materialize-textarea">original definition</textarea>
-				</div>
+			{$this->translatorFieldset("translated Label","translated Definition","translated Scope")}
 
-				<div>
-					<div>scope</div>
-					<textarea class="materialize-textarea">original scope</textarea>
-				</div>
-			</div>
 		</div>
 HTML;
 	}	
 	
+	function translatorFieldset($label, $definition, $scope){
+		$label = htmlentities($label);
+		$definition = htmlentities($definition);
+		$scope = htmlentities($scope);
+		
+		return <<<HTML
+		<div class="card-panel light-blue lighten-5">
+			<div class="input-field">
+				<textarea id="textarea1" class="materialize-textarea">$label</textarea>
+				<label for="textarea1">label</label>
+			</div>
+			
+			<div class="input-field">
+				<textarea id="textarea1" class="materialize-textarea">$definition</textarea>
+				<label for="textarea1">definition</label>
+			</div>
+			
+			<div class="input-field">
+				<textarea id="textarea1" class="materialize-textarea">$scope</textarea>
+				<label for="textarea1">scope</label>
+			</div>
+		</div>
+HTML;
+	}
+
 }
