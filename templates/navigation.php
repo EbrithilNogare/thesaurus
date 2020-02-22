@@ -29,24 +29,26 @@ HTML;
 		}
 
 		return <<<HTML
-			<ul class="collection">
+			<div class="collection">
 				{$hiearchyTreeRendered}
-			</ul>
+			</div>
 HTML;
 	}
 
 	function hiearchyTreeMenuLeaf($id, $hiearchyLeaf){
 		$hiearchyLeaf = htmlentities($hiearchyLeaf);
-		$hiearchyLeaf = htmlentities($hiearchyLeaf);
+
 		return <<<HTML
-			<li class='collection-item tooltipped' data-position='left' data-tooltip='id:{$id}'>
-				{$hiearchyLeaf}
-			</li>
+			<div class='collection-item tooltipped' data-position='left' data-tooltip='id:{$id}' onclick='loadLeaf({$id})' id='leaf:{$id}'>
+				<span>{$hiearchyLeaf}</span>
+				<div class="collection" id='leafCollection:{$id}' hidden></div>
+			</div>
 HTML;
 	}
 
 	function searchBar($searchValue){
 		$searchValue = htmlentities($searchValue);
+
 		return <<<HTML
 			<div class="card-panel light-blue lighten-5">
 				<input type="text" value="{$searchValue}"/>

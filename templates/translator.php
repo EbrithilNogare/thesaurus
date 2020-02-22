@@ -11,10 +11,10 @@ class Translator{
 		echo <<<HTML
 		<div class="col s6 offset-s1 card-panel light-blue">
 			<div class="card-panel light-blue lighten-5">
-				<div>word ID</div>
+				<div id='wordID'>word ID</div>
 			</div>
 
-			{$this->translatorFieldset("original Label","original Definition","original Scope")}
+			{$this->translatorFieldset("original Label","original Definition","original Scope", "en")}
 
 			<div>
 				<button class="btn light-blue darken-4 waves-effect waves-light">
@@ -27,13 +27,13 @@ class Translator{
 				</button>
 			</div>
 
-			{$this->translatorFieldset("translated Label","translated Definition","translated Scope")}
+			{$this->translatorFieldset("translated Label","translated Definition","translated Scope", "cs")}
 
 		</div>
 HTML;
 	}	
 	
-	function translatorFieldset($label, $definition, $scope){
+	function translatorFieldset($label, $definition, $scope, $prefix){
 		$label = htmlentities($label);
 		$definition = htmlentities($definition);
 		$scope = htmlentities($scope);
@@ -41,18 +41,18 @@ HTML;
 		return <<<HTML
 		<div class="card-panel light-blue lighten-5">
 			<div class="input-field">
-				<textarea id="textarea1" class="materialize-textarea">$label</textarea>
-				<label for="textarea1">label</label>
+				<textarea id="{$prefix}:label" class="materialize-textarea">$label</textarea>
+				<label for="{$prefix}:label">label</label>
 			</div>
 			
 			<div class="input-field">
-				<textarea id="textarea1" class="materialize-textarea">$definition</textarea>
-				<label for="textarea1">definition</label>
+				<textarea id="{$prefix}:definition" class="materialize-textarea">$definition</textarea>
+				<label for="{$prefix}:definition">definition</label>
 			</div>
 			
 			<div class="input-field">
-				<textarea id="textarea1" class="materialize-textarea">$scope</textarea>
-				<label for="textarea1">scope</label>
+				<textarea id="{$prefix}:scope" class="materialize-textarea">$scope</textarea>
+				<label for="{$prefix}:scope">scope</label>
 			</div>
 		</div>
 HTML;

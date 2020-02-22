@@ -8,3 +8,7 @@ textarea:focus,
 input[type=text]:focus{	
 	border-bottom: 2px solid #01579b !important;
 }
+
+.collection-item span{
+	cursor: pointer;
+}

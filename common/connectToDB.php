@@ -1,7 +1,7 @@
 <?php
 
 function connectToDB(){
-    include("localSettings.php");
+    include(dirname(__DIR__)."/localSettings.php");
     
     $conn = new mysqli($databaseAddress,  $databaseUsername, $databasePassword, $databaseName);  
 
