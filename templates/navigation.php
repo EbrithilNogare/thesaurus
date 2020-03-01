@@ -7,6 +7,9 @@ include_once("common/sqlQueries.php");
 class Navigation{
 	private $searchValue = "";
 	private $hiearchyTree = [];
+	private $triangleSVG = <<<SVG
+		<svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M10 17l5-5-5-5v10z"/><path d="M0 24V0h24v24H0z" fill="none"/></svg>
+SVG;
 
 	function __construct(){
 		$searchValue = "";
@@ -15,10 +18,23 @@ class Navigation{
 
 	function render(){
 		echo <<<HTML
-		<div class="col s3 offset-s1 card-panel light-blue">
+		<section class="navigation">
 			{$this->searchBar($this->searchValue)}
 			{$this->hiearchyTreeMenu()}
-		</div>
+		</section>
+HTML;
+	}
+
+	function searchBar($searchValue){
+		$searchValue = htmlentities($searchValue);
+
+		return <<<HTML
+			<div class="block searchBlock">
+				<input type="text" value="{$searchValue}"/>
+				<button class="">
+					find
+				</button>
+			</div>
 HTML;
 	}
 
@@ -29,7 +45,7 @@ HTML;
 		}
 
 		return <<<HTML
-			<div class="collection">
+			<div class="scrollable">
 				{$hiearchyTreeRendered}
 			</div>
 HTML;
@@ -39,25 +55,10 @@ HTML;
 		$hiearchyLeaf = htmlentities($hiearchyLeaf);
 
 		return <<<HTML
-			<div class='collection-item tooltipped' data-position='left' data-tooltip='id:{$id}' onclick='loadLeaf({$id})' id='leaf:{$id}'>
-				<span>{$hiearchyLeaf}</span>
-				<div class="collection" id='leafCollection:{$id}' hidden></div>
+			<div class='treeBlock' onclick='loadLeaf({$id})' id='leaf:{$id}'>
+				<div class="treeHeader">{$this->triangleSVG}{$hiearchyLeaf}</div>
+				<div class="treeCollection" id='leafCollection:{$id}' hidden></div>
 			</div>
 HTML;
-	}
-
-	function searchBar($searchValue){
-		$searchValue = htmlentities($searchValue);
-
-		return <<<HTML
-			<div class="card-panel light-blue lighten-5">
-				<input type="text" value="{$searchValue}"/>
-				<button class="btn light-blue darken-4 waves-effect waves-light" style="width:100%">
-					<i class="material-icons left">search</i>
-					find
-				</button>
-			</div>
-HTML;
-	}
-	
+	}	
 }

@@ -9,27 +9,27 @@ class Translator{
 
 	function render(){
 		echo <<<HTML
-		<div class="col s6 offset-s1 card-panel light-blue">
-			<div class="card-panel light-blue lighten-5">
-				<div id='wordID'>word ID</div>
-			</div>
-
+		<section class="translation">
 			{$this->translatorFieldset("original Label","original Definition","original Scope", "en")}
 
-			<div>
+			<div class="actions">
 				<button class="btn light-blue darken-4 waves-effect waves-light">
-					<i class="material-icons right">send</i>
 					update
 				</button>
+				
+				<div class="card-panel light-blue lighten-5">
+					<div id='wordID'>word ID</div>
+					<div id='wordID'>last update</div>
+				</div>
+				
 				<button class="btn right light-blue darken-4 waves-effect waves-light">
-					<i class="material-icons right">cached</i>
 					reverse
 				</button>
 			</div>
 
 			{$this->translatorFieldset("translated Label","translated Definition","translated Scope", "cs")}
 
-		</div>
+		</section>
 HTML;
 	}	
 	
@@ -39,20 +39,20 @@ HTML;
 		$scope = htmlentities($scope);
 		
 		return <<<HTML
-		<div class="card-panel light-blue lighten-5">
-			<div class="input-field">
-				<textarea id="{$prefix}:label" class="materialize-textarea">$label</textarea>
+		<div class="block grid">
+			<div class="inputField">
 				<label for="{$prefix}:label">label</label>
+				<textarea id="{$prefix}:label" class="materialize-textarea">$label</textarea>
 			</div>
 			
-			<div class="input-field">
-				<textarea id="{$prefix}:definition" class="materialize-textarea">$definition</textarea>
+			<div class="inputField">
 				<label for="{$prefix}:definition">definition</label>
+				<textarea id="{$prefix}:definition" class="materialize-textarea">$definition</textarea>
 			</div>
 			
-			<div class="input-field">
-				<textarea id="{$prefix}:scope" class="materialize-textarea">$scope</textarea>
+			<div class="inputField">
 				<label for="{$prefix}:scope">scope</label>
+				<textarea id="{$prefix}:scope" class="materialize-textarea">$scope</textarea>
 			</div>
 		</div>
 HTML;

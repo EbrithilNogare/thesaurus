@@ -1,14 +1,150 @@
+* {
+	box-sizing: border-box;
+}
+
 html, body{
+	background: #29ABE2;
+	
 	height: 100%;
 	min-height: 100%;
 	margin: 0;
+	
+	font-family: roboto;
+}
+
+header{
+	background: #2E3192;	
+	box-shadow: #0008 0 5px 5px;
+
+	width:100%;
+	height: 100px;
+    padding: 0px 20px;
+
+	font-size: 60px;
+    line-height: 100px;
+    color: #fff;
+}
+
+section{
+	background: #0071BC;
+	box-shadow: #0008 3px 3px 3px;	
+
+	float: left;
+
+	margin: 20px 0px 20px 20px;
+	height: calc(100% - 140px);
+	padding:20px;
+}
+
+button{
+	background: #1B1464;
+	box-shadow: #0008 3px 3px 3px;	
+	
+	height:60px;
+	min-width:60px;
+
+	color: #fff;
+	font-size: 30px;
+	line-height: 60px;
+	
+	border:0;
+	cursor: pointer;
+}
+
+.grid{
+	display: grid;
+}
+
+.block{
+	background: #66CCFF;
+	box-shadow: #0008 3px 3px 3px;	
+
+	padding: 10px;
+}
+
+.navigation{
+	display: grid;
+	grid-gap: 20px;
+	grid-template-columns: 1fr;
+	grid-template-rows: 80px 1fr;
+
+	width: 25%;
+}
+
+.treeBlock{
+	background: #66CCFF;
+	box-shadow: #0008 1px 3px 5px;	
+	
+	margin: 10px;
+}
+
+.treeHeader{
+	background: #3FA9F5;
+	box-shadow: #0008 0px 3px 3px;
+	
+	cursor: pointer;
+	
+	padding: 5px;
+}
+
+.treeHeader svg{
+	vertical-align: text-bottom;
+}
+
+
+.treeCollection{
+	padding: 5px 5px 5px 20px;
+}
+
+.translation{
+	display: grid;
+	grid-gap: 20px;
+	grid-template-columns: 1fr;
+	grid-template-rows: 1fr auto 1fr;
+
+	width: calc(75% - 60px);
+}
+
+.translation .actions{
+	display: grid;
+	grid-gap: 20px;
+	grid-template-columns: auto 1fr auto;	
+}
+
+.inputField textarea{
+	width:100%;
+	height: 100%;
+}
+
+.inputField label{
+	position: absolute;
+	right:60px;
+}
+
+textarea,
+input[type=text]{	
+	background: #fff0;
+	border: 0;
+	border-bottom: 2px solid #0d78c9;
+	resize: none;
+	color:#000;
+}
+
+.searchBlock{
+	height: 100%;
 }
 
 textarea:focus,
 input[type=text]:focus{	
-	border-bottom: 2px solid #01579b !important;
+	border-bottom: 4px solid #0d78c9;
 }
 
-.collection-item span{
-	cursor: pointer;
+.scrollable{
+	background: #66CCFF;
+	box-shadow: #0008 3px 3px 3px;	
+	
+	overflow-y: scroll;
+
+	height: 100%;
 }
+

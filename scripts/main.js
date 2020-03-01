@@ -8,6 +8,7 @@ document.addEventListener('DOMContentLoaded', function() {
 function $(id){ return document.getElementById(id);}
 
 function loadLeaf(id){
+	const triangleSVG = '<svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M10 17l5-5-5-5v10z"/><path d="M0 24V0h24v24H0z" fill="none"/></svg>';
 	event.stopPropagation();
 	fetch("API/getTranslation.php/?id="+id)
 		.then(result=>result.json())
@@ -26,18 +27,18 @@ function loadLeaf(id){
 
 				for(let childId in json["childs"]){
 					const node = document.createElement("div");
-					node.setAttribute("class", "collection-item tooltipped");
-					node.setAttribute("data-position", "left");
-					node.setAttribute("data-tooltip", "id:"+childId);
+					node.setAttribute("class", "treeBlock");
 					node.setAttribute("onclick", "loadLeaf("+childId+")");
 					node.setAttribute("id", "leaf:"+childId);
 
-					const textNode = document.createElement("span");
-					textNode.appendChild(document.createTextNode(json["childs"][childId]));
+					const textNode = document.createElement("div");
+					textNode.setAttribute("class", "treeHeader");
+					textNode.innerHTML=triangleSVG;
+					textNode.innerHTML+=json["childs"][childId];
 					node.appendChild(textNode);
 
 					const collectionNode = document.createElement("div");
-					collectionNode.setAttribute("class", "collection");
+					collectionNode.setAttribute("class", "treeCollection");
 					collectionNode.setAttribute("id", "leafCollection:"+childId);
 					collectionNode.setAttribute("hidden", true);
 					node.appendChild(collectionNode);
