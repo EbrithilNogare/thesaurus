@@ -7,9 +7,7 @@ include_once("common/sqlQueries.php");
 class Navigation{
 	private $searchValue = "";
 	private $hiearchyTree = [];
-	private $triangleSVG = <<<SVG
-		<svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M10 17l5-5-5-5v10z"/><path d="M0 24V0h24v24H0z" fill="none"/></svg>
-SVG;
+	private $triangleSVG = '<svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M10 17l5-5-5-5v10z"/><path d="M0 24V0h24v24H0z" fill="none"/></svg>';
 
 	function __construct(){
 		$searchValue = "";
@@ -27,12 +25,13 @@ HTML;
 
 	function searchBar($searchValue){
 		$searchValue = htmlentities($searchValue);
+		$searchSVG = file_get_contents("images/icons/search.svg");
 
 		return <<<HTML
 			<div class="block searchBlock">
 				<input type="text" value="{$searchValue}"/>
 				<button class="">
-					find
+					{$searchSVG}
 				</button>
 			</div>
 HTML;

@@ -18,8 +18,10 @@ function loadLeaf(id){
 			if(!leafCollDOM.hidden){
 				leafCollDOM.hidden = true;
 				leafCollDOM.innerHTML = "";
+				leafCollDOM.parentNode.getElementsByTagName("svg")[0].style="transform: rotate(0deg);";
 				return;
 			}
+			leafCollDOM.parentNode.getElementsByTagName("svg")[0].style="transform: rotate(90deg);";
 
 			if(json["childs"].length != 0){
 

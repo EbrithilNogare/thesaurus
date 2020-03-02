@@ -12,6 +12,24 @@ html, body{
 	font-family: roboto;
 }
 
+/* scrollbar */
+::-webkit-scrollbar {
+	width: 10px;
+}
+::-webkit-scrollbar-track {
+	background: #3FA9F5; 
+}
+::-webkit-scrollbar-thumb {
+	background: #2E3192; 
+}
+::-webkit-scrollbar-thumb:hover {
+	background: #090c5c; 
+}
+
+input:focus, textarea:focus, select:focus{
+	outline: none;
+}
+
 header{
 	background: #2E3192;	
 	box-shadow: #0008 0 5px 5px;
@@ -40,15 +58,19 @@ button{
 	background: #1B1464;
 	box-shadow: #0008 3px 3px 3px;	
 	
-	height:60px;
-	min-width:60px;
+	height:40px;
+	min-width:40px;
 
 	color: #fff;
 	font-size: 30px;
-	line-height: 60px;
+	line-height: 40px;
 	
 	border:0;
 	cursor: pointer;
+}
+
+button:hover{
+	background: #1f12a5;
 }
 
 .grid{
@@ -58,6 +80,8 @@ button{
 .block{
 	background: #66CCFF;
 	box-shadow: #0008 3px 3px 3px;	
+	
+    grid-gap: 10px;
 
 	padding: 10px;
 }
@@ -66,16 +90,13 @@ button{
 	display: grid;
 	grid-gap: 20px;
 	grid-template-columns: 1fr;
-	grid-template-rows: 80px 1fr;
+	grid-template-rows: 60px 1fr;
 
-	width: 25%;
+	width: 440px;
 }
 
 .treeBlock{
 	background: #66CCFF;
-	box-shadow: #0008 1px 3px 5px;	
-	
-	margin: 10px;
 }
 
 .treeHeader{
@@ -84,7 +105,7 @@ button{
 	
 	cursor: pointer;
 	
-	padding: 5px;
+	padding: 8px;
 }
 
 .treeHeader svg{
@@ -93,16 +114,16 @@ button{
 
 
 .treeCollection{
-	padding: 5px 5px 5px 20px;
+	padding: 0px 0px 5px 20px;
 }
 
 .translation{
 	display: grid;
-	grid-gap: 20px;
+	grid-gap: 10px;
 	grid-template-columns: 1fr;
 	grid-template-rows: 1fr auto 1fr;
 
-	width: calc(75% - 60px);
+	width: calc(100% - 500px);
 }
 
 .translation .actions{
@@ -112,13 +133,18 @@ button{
 }
 
 .inputField textarea{
-	width:100%;
+	width: calc(100% - 101px);
 	height: 100%;
 }
 
 .inputField label{
 	position: absolute;
 	right:60px;
+}
+
+.translationInfo{
+	color: #fff;
+	text-align: right;
 }
 
 textarea,
@@ -132,6 +158,21 @@ input[type=text]{
 
 .searchBlock{
 	height: 100%;
+
+	display: grid;
+	grid-gap: 20px;
+	grid-template-columns: 1fr auto;
+}
+
+.searchBlock input{
+	min-width: 10px;
+	
+    font-size: x-large;
+}
+
+button svg{
+	fill: #fff;
+	margin: auto;
 }
 
 textarea:focus,

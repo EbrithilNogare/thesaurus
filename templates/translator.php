@@ -8,6 +8,9 @@ class Translator{
 	}
 
 	function render(){
+		$cachedSVG = file_get_contents("images/icons/cached.svg");
+		$sendSVG = file_get_contents("images/icons/send.svg");
+
 		echo <<<HTML
 		<section class="translation">
 			{$this->translatorFieldset("original Label","original Definition","original Scope", "en")}
@@ -15,15 +18,17 @@ class Translator{
 			<div class="actions">
 				<button class="btn light-blue darken-4 waves-effect waves-light">
 					update
+					{$sendSVG}
 				</button>
 				
-				<div class="card-panel light-blue lighten-5">
+				<div class="translationInfo">
 					<div id='wordID'>word ID</div>
 					<div id='wordID'>last update</div>
 				</div>
 				
 				<button class="btn right light-blue darken-4 waves-effect waves-light">
 					reverse
+					{$cachedSVG}
 				</button>
 			</div>
 
