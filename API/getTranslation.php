@@ -17,6 +17,7 @@ if(
 $id = intval($_GET["id"]);
 $responseData = [];
 $responseData['childs'] = [];
+$responseData['parent'] = [];
 
 $conn = connectToDB();
 
@@ -37,7 +38,7 @@ while($row = $result->fetch_assoc()) {
   	$responseData[$row['language']] = $tempArray;
 }
 
-$stmt = $conn->prepare("SELECT ID, label FROM `words` LEFT JOIN translations ON translations.word_id = words.ID WHERE language = 'en' AND `parent` = ?");
+$stmt = $conn->prepare("SELECT ID, label, childs FROM `words` LEFT JOIN translations ON translations.word_id = words.ID WHERE language = 'en' AND `parent` = ?");
 $stmt->bind_param("i", $id);
 
 $stmt->execute();
@@ -46,6 +47,7 @@ $result = $stmt->get_result();
 if($result->num_rows != 0){
 	while($row = $result->fetch_assoc()) {
 		$responseData['childs'][$row['ID']] = $row['label'];
+		$responseData['parent'][$row['ID']] = $row['childs'] == "1";
 	}
 }
 

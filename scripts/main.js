@@ -1,14 +1,8 @@
-// todo change it for css tooltip
-
-document.addEventListener('DOMContentLoaded', function() {
-	var elems = document.querySelectorAll('.tooltipped');
-	var instances = M.Tooltip.init(elems, {enterDelay:1000});
-});
-
 function $(id){ return document.getElementById(id);}
 
 function loadLeaf(id){
 	const triangleSVG = '<svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M10 17l5-5-5-5v10z"/><path d="M0 24V0h24v24H0z" fill="none"/></svg>';
+	const dotSVG = '<svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="m12,8c-2.21,0 -4,1.79 -4,4s1.79,4 4,4s4,-1.79 4,-4s-1.79,-4 -4,-4z"/></svg>';
 	event.stopPropagation();
 	fetch("API/getTranslation.php/?id="+id)
 		.then(result=>result.json())
@@ -35,7 +29,10 @@ function loadLeaf(id){
 
 					const textNode = document.createElement("div");
 					textNode.setAttribute("class", "treeHeader");
-					textNode.innerHTML=triangleSVG;
+					if(json["parent"][childId])
+						textNode.innerHTML=triangleSVG;
+					else
+						textNode.innerHTML=dotSVG;
 					textNode.innerHTML+=json["childs"][childId];
 					node.appendChild(textNode);
 
@@ -50,18 +47,20 @@ function loadLeaf(id){
 			}
 
 
+			history.pushState({word: json["en"].id}, "", "?word="+json["en"].id)
 			
 
 			// translation
-			$("wordID").innerText = json["en"].id;
+			$("wordID").innerText = "ID: " + json["en"].id;
+			$("wordLastUpdate").innerText = "last update: "; // todo
 			
-			$("en:label").innerText = json["en"].label;
-			$("en:definition").innerText = json["en"].definition;
-			$("en:scope").innerText = json["en"].scope;
+			$("en:label").value = json["en"].label;
+			$("en:definition").value = json["en"].definition;
+			$("en:scope").value = json["en"].scope;
 			
-			$("cs:label").innerText = json["cs"].label;
-			$("cs:definition").innerText = json["cs"].definition;
-			$("cs:scope").innerText = json["cs"].scope;		
+			$("cs:label").value = json["cs"].label;
+			$("cs:definition").value = json["cs"].definition;
+			$("cs:scope").value = json["cs"].scope;		
 		});
 }
 

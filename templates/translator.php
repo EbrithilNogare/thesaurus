@@ -23,7 +23,7 @@ class Translator{
 				
 				<div class="translationInfo">
 					<div id='wordID'>word ID</div>
-					<div id='wordID'>last update</div>
+					<div id='wordLastUpdate'>last update</div>
 				</div>
 				
 				<button class="btn right light-blue darken-4 waves-effect waves-light">
@@ -45,20 +45,16 @@ HTML;
 		
 		return <<<HTML
 		<div class="block grid">
-			<div class="inputField">
-				<label for="{$prefix}:label">label</label>
-				<textarea id="{$prefix}:label" class="materialize-textarea">$label</textarea>
-			</div>
+		
+			<label for="{$prefix}:label">label</label>
+			<textarea id="{$prefix}:label" class="materialize-textarea">$label</textarea>
+			<hr>
+			<label for="{$prefix}:definition">definition</label>
+			<textarea id="{$prefix}:definition" class="materialize-textarea">$definition</textarea>
 			
-			<div class="inputField">
-				<label for="{$prefix}:definition">definition</label>
-				<textarea id="{$prefix}:definition" class="materialize-textarea">$definition</textarea>
-			</div>
+			<label for="{$prefix}:scope">scope</label>
+			<textarea id="{$prefix}:scope" class="materialize-textarea">$scope</textarea>
 			
-			<div class="inputField">
-				<label for="{$prefix}:scope">scope</label>
-				<textarea id="{$prefix}:scope" class="materialize-textarea">$scope</textarea>
-			</div>
 		</div>
 HTML;
 	}
