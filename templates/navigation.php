@@ -1,7 +1,6 @@
 <?php
 
 include_once("common/connectToDB.php");
-include_once("common/sqlQueries.php");
 
 
 class Navigation{
@@ -11,7 +10,7 @@ class Navigation{
 
 	function __construct(){
 		$searchValue = "";
-		$this->hiearchyTree = loadTreeViewByParentID(0);
+		$this->hiearchyTree = $this->loadTreeViewByParentID(0);
 	}
 
 	function render(){
@@ -60,4 +59,30 @@ HTML;
 			</div>
 HTML;
 	}	
+
+	function loadTreeViewByParentID($parentID){
+		$hiearchyTree = [];
+		$conn = connectToDB();
+	
+		$sql = <<<SQL
+			SELECT ID, label 
+			FROM words
+			LEFT JOIN translations ON translations.word_id = words.ID
+			WHERE parent = ? AND language = 'en'
+			ORDER BY translations.label ASC	
+	SQL;
+	
+		$stmt = $conn->prepare($sql);
+		$stmt->bind_param("i", $parentID);
+		$stmt->execute();
+		$result = $stmt->get_result();
+
+		while ($row = $result->fetch_assoc()) {
+			$hiearchyTree[$row["ID"]] = $row["label"];
+		}
+	
+		$stmt->close();
+		$conn->close();
+		return $hiearchyTree;
+	}
 }

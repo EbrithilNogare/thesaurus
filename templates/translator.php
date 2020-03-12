@@ -48,7 +48,7 @@ HTML;
 		
 			<label for="{$prefix}:label">label</label>
 			<textarea id="{$prefix}:label" class="materialize-textarea">$label</textarea>
-			<hr>
+			
 			<label for="{$prefix}:definition">definition</label>
 			<textarea id="{$prefix}:definition" class="materialize-textarea">$definition</textarea>
 			
