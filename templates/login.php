@@ -1,7 +1,7 @@
 <?php
 
-include_once("common/connectToDB.php");
-include_once("common/random.php");
+include_once(dirname(__DIR__)."/common/connectToDB.php");
+include_once(dirname(__DIR__)."/common/random.php");
 
 
 class Login{
@@ -48,8 +48,12 @@ SQL;
 
 		$stmt = $conn->prepare($sql);
 		$stmt->bind_param("s", $username);
-		if(!$stmt->execute())
-			echo "something wrong in session validation";
+		if(!$stmt->execute()){
+			$stmt->close();
+			$conn->close();
+			echo '{"Status": "Error", "Message": "something wrong with DB"}';
+			return;
+		}
 		$result = $stmt->get_result();
 			
 		if($result->num_rows == 0){ // wrong username
@@ -84,8 +88,12 @@ SQL;
 		
 		$stmt = $conn->prepare($sql);
 		$stmt->bind_param("sss", $newSessionID, $sessionExpiration, $username);
-		if(!$stmt->execute())
-			echo "something wrong in session creation";
+		if(!$stmt->execute()){
+			$stmt->close();
+			$conn->close();
+			echo '{"Status": "Error", "Message": "something wrong in session validation"}';
+			return;
+		}
 
 		setcookie("sessionID", $newSessionID, $sessionTimeToDie);
 
@@ -112,8 +120,12 @@ SQL;
 
 		$stmt = $conn->prepare($sql);
 		$stmt->bind_param("s", $_COOKIE["sessionID"]);
-		if(!$stmt->execute())
-			echo "something wrong in session validation";
+		if(!$stmt->execute()){
+			$stmt->close();
+			$conn->close();
+			echo '{"Status": "Error", "Message": "something wrong in session validation"}';
+			return;
+		}
 		$result = $stmt->get_result();
 			
 		if($result->num_rows > 0){

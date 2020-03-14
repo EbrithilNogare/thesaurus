@@ -26,6 +26,74 @@ html, body{
 	background: #090c5c; 
 }
 
+/* Customize the label (the mtlCheckbox) */
+.mtlCheckbox {
+	display: block;
+	position: relative;
+	padding-left: 35px;
+	margin-bottom: 12px;
+	cursor: pointer;
+	font-size: 22px;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+}
+
+/* Hide the browser's default checkbox */
+.mtlCheckbox input {
+	position: absolute;
+	opacity: 0;
+	cursor: pointer;
+	height: 0;
+	width: 0;
+}
+
+/* Create a custom checkbox */
+.checkmark {
+	position: absolute;
+	top: 0;
+	left: 0;
+	height: 25px;
+	width: 25px;
+	background-color: #abdaff;
+}
+
+/* On mouse-over, add a grey background color */
+.mtlCheckbox:hover input~.checkmark {
+	background-color: #2196F3;
+}
+
+/* When the checkbox is checked, add a blue background */
+.mtlCheckbox input:checked~.checkmark {
+	background-color: #2196F3;
+}
+
+/* Create the checkmark/indicator (hidden when not checked) */
+.checkmark:after {
+	content: "";
+	position: absolute;
+	display: none;
+}
+
+/* Show the checkmark when checked */
+.mtlCheckbox input:checked~.checkmark:after {
+	display: block;
+}
+
+/* Style the checkmark/indicator */
+.mtlCheckbox .checkmark:after {
+	left: 9px;
+	top: 5px;
+	width: 5px;
+	height: 10px;
+	border: solid white;
+	border-width: 0 3px 3px 0;
+	-webkit-transform: rotate(45deg);
+	-ms-transform: rotate(45deg);
+	transform: rotate(45deg);
+}
+
 input:focus, textarea:focus, select:focus, button:focus{
 	outline: none;
 }
@@ -74,6 +142,10 @@ section{
 	margin: 20px 0px 20px 20px;
 	height: calc(100% - 140px);
 	padding:20px;
+}
+
+hr{
+    border: solid 1px#1B1464;
 }
 
 input[type=submit],
@@ -226,7 +298,8 @@ button svg{
 }
 
 textarea:focus,
-input[type=text]:focus{	
+input[type=text]:focus,
+input[type=password]:focus{	
 	border-bottom: 4px solid #0d78c9;
 }
 
@@ -239,3 +312,40 @@ input[type=text]:focus{
 	height: 100%;
 }
 
+.users{
+	display: grid;
+	grid-template-rows: auto auto 1fr;
+	width: calc(50% - 30px);
+	position: relative;
+	left: 25%;
+}
+
+.users table{
+	width: 100%;
+
+	table-layout: auto;
+	text-align: center;
+	border-collapse: collapse
+}
+
+.users table thead{
+	background: #3FA9F5;
+}
+
+.users table tbody{
+	background: #66CCFF;
+}
+
+.users table tbody tr:hover {
+	background-color: #52bafa;
+}
+
+.userAdd{
+	display: grid;
+	grid-template-columns: auto 1fr 150px;
+	grid-template-rows: repeat(2, 1fr);
+	grid-column-gap: 35px;
+	grid-row-gap: 10px;
+	
+	font-weight: bold;
+}

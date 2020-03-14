@@ -1,7 +1,14 @@
 <?php
 
 include_once(dirname(__DIR__)."/common/connectToDB.php");
+include_once(dirname(__DIR__)."/templates/login.php");
 
+$login = new Login(); 
+
+if(!$login->logged){
+	echo "Error:Your session expired";
+	return;
+}
 
 if(
 	!isset($_GET["id"]) ||
