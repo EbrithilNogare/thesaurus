@@ -10,6 +10,11 @@ if(!$login->logged){
 	return;
 }
 
+if($login->userInfo["status"] != "A"){
+	echo '{"Status": "Error", "Message": "You are not admin"}';
+	return;
+}
+
 if(
 	!isset($_GET["id"]) ||
 	empty($_GET["id"])
