@@ -19,6 +19,7 @@ class Login{
 				$this->logged = true;				
 				$this->userInfo["username"] = $loginResult["username"];
 				$this->userInfo["status"] = $loginResult["status"];
+				$this->userInfo["id"] = $loginResult["id"];
 			}else{
 				// todo
 			}
@@ -41,7 +42,7 @@ HTML;
 		$conn = connectToDB();
 	
 		$sql = <<<SQL
-			SELECT password, status
+			SELECT ID, password, status
 			FROM `users`
 			WHERE `username` = ?
 SQL;
@@ -67,6 +68,7 @@ SQL;
 		$row = $result->fetch_assoc();
 		$hashedPassword = $row['password'];
 		$status = $row['status'];
+		$userId = $row['ID'];
 
 		if (!hash_equals($hashedPassword, crypt($password, $hashedPassword))) { // wrong password
 			$stmt->close();
@@ -102,6 +104,7 @@ SQL;
 		$toReturn["success"] = true;
 		$toReturn["username"] = $username;
 		$toReturn["status"] = $status;
+		$toReturn["id"] = $userId;
 		return $toReturn;
 	}
 	
@@ -113,7 +116,7 @@ SQL;
 		$conn = connectToDB();
 	
 		$sql = <<<SQL
-			SELECT status, sessionExpiration
+			SELECT ID, status, sessionExpiration
 			FROM `users`
 			WHERE `session` = ?
 SQL;
@@ -132,6 +135,7 @@ SQL;
 			$toReturn = true;
 			$row = $result->fetch_assoc();
 			$this->userInfo["status"] = $row["status"];
+			$this->userInfo["id"] = $row["ID"];
 			if(strtotime($row["sessionExpiration"])<=time()){
 				$toReturn = false;
 				$this->userInfo["status"] = "X";

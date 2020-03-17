@@ -16,7 +16,7 @@ class Translator{
 			{$this->translatorFieldset("original Label","original Definition","original Scope", "en")}
 
 			<div class="actions">
-				<button class="btn light-blue darken-4 waves-effect waves-light">
+				<button onclick="updateTranslation()">
 					update
 					{$sendSVG}
 				</button>
@@ -26,7 +26,7 @@ class Translator{
 					<div id='wordLastUpdate'>last update</div>
 				</div>
 				
-				<button class="btn right light-blue darken-4 waves-effect waves-light">
+				<button onclick="Thesaurus.updateTranslationView()">
 					reverse
 					{$cachedSVG}
 				</button>
@@ -47,13 +47,13 @@ HTML;
 		<div class="block grid">
 		
 			<label for="{$prefix}:label">label</label>
-			<textarea id="{$prefix}:label" class="materialize-textarea">$label</textarea>
+			<textarea id="{$prefix}:label">$label</textarea>
 			
 			<label for="{$prefix}:definition">definition</label>
-			<textarea id="{$prefix}:definition" class="materialize-textarea">$definition</textarea>
+			<textarea id="{$prefix}:definition">$definition</textarea>
 			
 			<label for="{$prefix}:scope">scope</label>
-			<textarea id="{$prefix}:scope" class="materialize-textarea">$scope</textarea>
+			<textarea id="{$prefix}:scope">$scope</textarea>
 			
 		</div>
 HTML;

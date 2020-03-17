@@ -1,0 +1,42 @@
+
+.users{
+	display: grid;
+	grid-template-rows: auto auto 1fr;
+	width: calc(50% - 30px);
+	position: relative;
+	left: 25%;
+}
+
+.users input{
+    font-size: large;
+}
+
+.users table{
+	width: 100%;
+
+	table-layout: auto;
+	text-align: center;
+	border-collapse: collapse
+}
+
+.users table thead{
+	background: #3FA9F5;
+}
+
+.users table tbody{
+	background: #66CCFF;
+}
+
+.users table tbody tr:hover {
+	background-color: #52bafa;
+}
+
+.userAdd{
+	display: grid;
+	grid-template-columns: auto 1fr 150px;
+	grid-template-rows: repeat(2, 1fr);
+	grid-column-gap: 35px;
+	grid-row-gap: 10px;
+	
+	font-weight: bold;
+}

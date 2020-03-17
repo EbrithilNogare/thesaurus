@@ -1,3 +1,0 @@
-change primary key in table translations to word_id and language 
-
-change root ID to -1 from zero and change table from uint to int

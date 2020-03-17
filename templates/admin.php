@@ -41,6 +41,8 @@ HTML;
 		}
 
 		echo <<<HTML
+			<script src="scripts/admin.js"></script>	
+			<link rel="stylesheet" href="styles/admin.css">
 			<section class="users">
 				<div class="block userAdd">					
 					Name:<input type="text" id="userAddName">

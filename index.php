@@ -28,6 +28,7 @@
 	<script src="scripts/main.js"></script>
 
 	<link rel="stylesheet" href="styles/main.css">
+
 </head>
 
 <body>
