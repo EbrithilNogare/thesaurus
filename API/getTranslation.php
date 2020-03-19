@@ -60,7 +60,16 @@ while($row = $result->fetch_assoc()) {
 }
 
 // get childs for tree view
-$stmt = $conn->prepare("SELECT ID, label, childs FROM `words` LEFT JOIN translations ON translations.word_id = words.ID WHERE language = 'en' AND `parent` = ?");
+$sql = <<<SQL
+	SELECT ID, label, childs
+	FROM words
+	LEFT JOIN translations
+	ON translations.word_id = words.ID
+	WHERE `parent` = ? AND language = 'en'
+	ORDER BY translations.label ASC	
+SQL;
+
+$stmt = $conn->prepare($sql);
 $stmt->bind_param("i", $id);
 
 if(!$stmt->execute()){
@@ -113,4 +122,3 @@ $stmt->close();
 $conn->close();
 
 echo json_encode($responseData);
-

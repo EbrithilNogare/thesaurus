@@ -1,5 +1,15 @@
-* {
+*{
 	box-sizing: border-box;
+}
+
+::selection {
+    background: #9C27B0;
+    color: #fff;
+}
+
+::-moz-selection{
+    background: #9C27B0;
+	color: #fff;
 }
 
 html, body{

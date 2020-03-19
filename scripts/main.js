@@ -53,15 +53,17 @@ const Thesaurus = {
 			node.setAttribute("onclick", `loadLeaf(${childId})`);
 			node.setAttribute("id", `leaf:${childId}`);
 
-			const textNode = document.createElement("div");
-			textNode.setAttribute("class", "treeHeader");
+			const headerNode = document.createElement("div");
+			headerNode.setAttribute("class", "treeHeader");
 			if(this.childs[childId].parent)
-				textNode.innerHTML = triangleSVG;
+				headerNode.innerHTML = triangleSVG;
 			else
-				textNode.innerHTML = dotSVG;
-			textNode.innerHTML += this.childs[childId].title;
-			node.appendChild(textNode);
+				headerNode.innerHTML = dotSVG;
+			node.appendChild(headerNode);
 
+			const textNode = document.createElement("span");
+			textNode.innerText += this.childs[childId].title;
+			headerNode.appendChild(textNode);
 			
 			if(this.childs[childId].parent){
 				const collectionNode = document.createElement("div");

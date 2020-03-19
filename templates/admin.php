@@ -20,10 +20,11 @@ class Admin{
 		$usersList = $this->getUsers();
 		foreach ($usersList as $key => $value) {
 			$isAdmin = $value[1] == "A" ? "checked" : "";
+			$username = htmlentities($value[0]);
 			$usersTable.=<<<HTML
 			<tr>
 				<td>{$key}</td>
-				<td>{$value[0]}</td>
+				<td>{$username}</td>
 				<td><input type="password" id="userEditPswd:{$key}"></td>
 				<td>
 					<label class="mtlCheckbox">

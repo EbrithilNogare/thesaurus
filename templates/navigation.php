@@ -65,7 +65,7 @@ HTML;
 		$conn = connectToDB();
 	
 		$sql = <<<SQL
-			SELECT ID, label 
+			SELECT ID, label, childs
 			FROM words
 			LEFT JOIN translations ON translations.word_id = words.ID
 			WHERE parent = ? AND language = 'en'
