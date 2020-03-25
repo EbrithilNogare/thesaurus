@@ -23,7 +23,7 @@ if(
 $id = intval($_GET["id"]);
 $responseData = [];
 $responseData['id'] = $id;
-$responseData['lastUpdate'] = "no data";
+$responseData['lastUpdate'] = "";
 $responseData['childs'] = [];
 $responseData['parent'] = [];
 
@@ -34,7 +34,7 @@ $stmt = $conn->prepare("SELECT *  FROM `translations` WHERE `word_id` = ?");
 $stmt->bind_param("i", $id);
 
 if(!$stmt->execute()){
-	echo "something wrog with DB";	
+	echo "something wrong with DB";	
 	echo $stmt->error;
 	$stmt->close();
 	$conn->close();
@@ -59,6 +59,42 @@ while($row = $result->fetch_assoc()) {
   	$responseData[$row['language']] = $tempArray;
 }
 
+
+// get paarent ID and name
+$sql = <<<SQL
+	SELECT parent, label
+	FROM words
+	LEFT JOIN translations
+	ON translations.word_id = words.parent
+	WHERE `ID` = ? AND `language` = "en"
+SQL;
+
+$stmt = $conn->prepare($sql);
+$stmt->bind_param("i", $id);
+
+if(!$stmt->execute()){
+	echo "something wrong with DB";	
+	echo $stmt->error;
+	$stmt->close();
+	$conn->close();
+	http_response_code(400);
+	return;
+}
+
+$result = $stmt->get_result();
+if($result->num_rows === 0){
+	echo "word not found";
+	$stmt->close();
+	$conn->close();
+	http_response_code(400);
+	return;
+}
+
+$row = $result->fetch_assoc();
+$responseData['parentId'] = $row['parent'];
+$responseData['parentLabel'] = $row['label'];
+
+
 // get childs for tree view
 $sql = <<<SQL
 	SELECT ID, label, childs
@@ -73,7 +109,7 @@ $stmt = $conn->prepare($sql);
 $stmt->bind_param("i", $id);
 
 if(!$stmt->execute()){
-	echo "something wrog with DB";		
+	echo "something wrong with DB";
 	echo $stmt->error;
 	$stmt->close();
 	$conn->close();
@@ -88,6 +124,7 @@ if($result->num_rows != 0){
 		$responseData['parent'][$row['ID']] = $row['childs'] == "1";
 	}
 }
+
 
 // get last update of this word
 $sql = <<<SQL
@@ -104,7 +141,7 @@ $stmt = $conn->prepare($sql);
 $stmt->bind_param("i", $id);
 
 if(!$stmt->execute()){
-	echo "something wrog with DB";		
+	echo "something wrong with DB";		
 	echo $stmt->error;
 	$stmt->close();
 	$conn->close();

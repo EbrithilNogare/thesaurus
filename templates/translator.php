@@ -13,7 +13,7 @@ class Translator{
 
 		echo <<<HTML
 		<section class="translation">
-			{$this->translatorFieldset("original Label","original Definition","original Scope", "en")}
+			{$this->translatorFieldset("","","", "en")}
 
 			<div class="actions">
 				<button onclick="updateTranslation()">
@@ -21,18 +21,25 @@ class Translator{
 					{$sendSVG}
 				</button>
 				
-				<div class="translationInfo">
-					<div id='wordID'>word ID</div>
-					<div id='wordLastUpdate'>last update</div>
+				<div class="block" id="wordID">
+					ID:
 				</div>
 				
+				<div class="block" id="wordParent" onclick="changeParent()">
+					parent:
+				</div>
+				
+				<div class="block" id="wordLastUpdate" onclick="showLastUpdates()">
+					last update:
+				</div>
+								
 				<button onclick="Thesaurus.updateTranslationView()">
 					reverse
 					{$cachedSVG}
 				</button>
 			</div>
 
-			{$this->translatorFieldset("translated Label","translated Definition","translated Scope", "cs")}
+			{$this->translatorFieldset("","","", "cs")}
 
 		</section>
 HTML;

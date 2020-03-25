@@ -5,6 +5,10 @@ const dotSVG = '<svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0
 
 const Thesaurus = {
 	id: 0,
+	parent: {
+		id:0,
+		label:"",
+	},
 	lastUpdate: "",
 	original:{
 		language: "en",
@@ -23,6 +27,7 @@ const Thesaurus = {
 		history.pushState({word: this.id}, "", "?word="+this.id);
 		
 		$("wordID").innerText = "ID: " + this.id;
+		$("wordParent").innerText = `parent: ${this.parent.label}`;
 		$("wordLastUpdate").innerText = "last update: " + this.lastUpdate;
 		
 		$("en:label").value = this.original.label;
@@ -89,7 +94,9 @@ function loadLeaf(id){
 	fetch("API/getTranslation.php/?id="+id)
 		.then(result=>result.json())
 		.then(json=>{
-			Thesaurus.id = json["id"];			
+			Thesaurus.id = json["id"];	
+			Thesaurus.parent.id = json["parentId"];		
+			Thesaurus.parent.label = json["parentLabel"];			
 			Thesaurus.lastUpdate = json["lastUpdate"];
 			
 			Thesaurus.childs = [];
@@ -121,25 +128,21 @@ function updateTranslation(){
 		return;
 
 	const postBody = {
-		id:Thesaurus.id,
-		original:{
+		id: Thesaurus.id,
+		parent: Thesaurus.parent.id,
+		original: {
 			lang: Thesaurus.original.language,
 			label: $("en:label").value,
 			definition: $("en:definition").value,
 			scope: $("en:scope").value,
 		},
-		translation:{
+		translation: {
 			lang: Thesaurus.translation.language,
 			label: $("cs:label").value,
 			definition: $("cs:definition").value,
 			scope: $("cs:scope").value,
 		},
 	}
-
-
-
-
-	
 	
 	fetch('API/updateTranslation.php', {
 		method: 'POST',
@@ -148,21 +151,24 @@ function updateTranslation(){
 		},
 		body: JSON.stringify(postBody),
 	})
+}
 
-	/*
+function changeParent(){
+	let newID = prompt("write ID of new parent", Thesaurus.parent.id);
+	if(newID == null)
+		return;
+	
+	fetch("API/getTranslation.php/?id="+newID)
 		.then(result=>result.json())
 		.then(json=>{
-			
-			$("wordLastUpdate").innerText = ""; // todo
-		
+			Thesaurus.parent.id = json["id"];	
+			Thesaurus.parent.label = json["en"].label;	
+
+			$("wordParent").innerText = "parent: " + Thesaurus.parent.label;
 		})
-		.catch(error => console.error(`loadLeaf => ${error.message}`))
-*/
+		.catch(error => console.error(`loadLeaf => ${error.message}`));
+}
 
-
-
-
-
-
-
+function showLastUpdates(){
+	
 }

@@ -227,7 +227,7 @@ button:hover{
 
 .treeHeader{
 	background: #3FA9F5;
-	box-shadow: #0008 0px 3px 3px;
+	box-shadow: #0008 0px 4px 4px -1px;
 	
 	cursor: pointer;
 	
@@ -240,7 +240,7 @@ button:hover{
 
 
 .treeCollection{
-	padding: 0px 0px 5px 20px;
+	padding: 0px 0px 0px 20px;
 }
 
 .translation{
@@ -255,26 +255,19 @@ button:hover{
 .translation .actions{
 	display: grid;
 	grid-gap: 20px;
-	grid-template-columns: auto 1fr auto;	
+	grid-template-columns: 150px auto auto auto 160px;	
 }
 
 .translation .grid{
-	grid-template-rows: repeat(3, auto 1fr);
+	grid-template-rows: auto 1fr auto 2fr auto 3fr;
 }
 
-.inputField textarea{
-	width: calc(100% - 101px);
-	height: 100%;
+.translation textarea{
+	font-size: 15px;
 }
 
-.inputField label{
-	position: absolute;
-	right:60px;
-}
-
-.translationInfo{
-	color: #fff;
-	text-align: right;
+.translation label{
+	font-size: 17px;
 }
 
 textarea,
@@ -286,6 +279,13 @@ input[type=password]{
 	resize: none;
 	color:#000;
 	font-family: roboto;
+}
+
+textarea:focus,
+input[type=text]:focus,
+input[type=password]:focus{	
+	border-bottom: 4px solid #0d78c9;
+	margin-bottom: -2px;
 }
 
 .searchBlock{
@@ -305,12 +305,6 @@ input[type=password]{
 button svg{
 	fill: #fff;
 	margin: auto;
-}
-
-textarea:focus,
-input[type=text]:focus,
-input[type=password]:focus{	
-	border-bottom: 4px solid #0d78c9;
 }
 
 .scrollable{

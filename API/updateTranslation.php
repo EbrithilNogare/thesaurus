@@ -21,6 +21,7 @@ $data = json_decode(file_get_contents('php://input'), true);
 
 if(
 	!isset($data["id"]) ||
+	!isset($data["parent"]) ||
 	!isset($data["original"]) ||
 	!isset($data["original"]["lang"]) ||
 	!isset($data["translation"]) ||
@@ -36,11 +37,11 @@ $conn = connectToDB();
 // get previous
 $previousData = [];
 
-$stmt = $conn->prepare("SELECT *  FROM `translations` WHERE `word_id` = ?");
+$stmt = $conn->prepare("SELECT * FROM translations LEFT JOIN words ON translations.word_id = words.ID WHERE `word_id` = ?");
 $stmt->bind_param("i", $data["id"]);
 
 if(!$stmt->execute()){
-	echo "something wrog with DB";	
+	echo "something wrong with DB";	
 	echo $stmt->error;
 	$stmt->close();
 	$conn->close();
@@ -62,7 +63,8 @@ while($row = $result->fetch_assoc()) {
 	$tempArray['label'] = $row['label'];
 	$tempArray['definition'] = $row['definition'];
 	$tempArray['scope'] = $row['scope'];
-  	$previousData[$row['language']] = $tempArray;
+	$previousData[$row['language']] = $tempArray;
+	$previousData['parent'] = $row['parent'];
 }
 
 
@@ -97,7 +99,7 @@ $stmt->bind_param("sssis",
 	$data["original"]["lang"]
 );
 if(!$stmt->execute()){
-	echo "something wrog with DB";	
+	echo "something wrong with DB";	
 	echo $stmt->error;	
 	$stmt->close();
 	$conn->close();
@@ -124,12 +126,45 @@ $stmt->bind_param("sssis",
 	$data["translation"]["lang"]
 );
 if(!$stmt->execute()){
-	echo "something wrog with DB";		
+	echo "something wrong with DB";		
 	echo $stmt->error;
 	$stmt->close();
 	$conn->close();
 	http_response_code(400);
 	return;
+}
+
+
+if($data["parent"] != $previousData['parent']){
+	// log parent change
+	logChange($settings, "parent", $lang, $data["parent"], $previousData['parent']);
+
+
+
+	// parent change	
+	$stmt1 = $conn->prepare("UPDATE words SET parent = ? WHERE ID = ?");
+	$stmt2 = $conn->prepare("UPDATE words SET childs = 1 WHERE ID = ?");
+	$stmt3 = $conn->prepare("UPDATE words SET childs = 0 WHERE ID = ?");
+	$stmt4 = $conn->prepare("UPDATE words, words AS words2 SET words.childs = 1 WHERE words.ID = ? AND words.ID = words2.parent");
+	
+	$stmt1->bind_param("ii", $data["parent"], $data["id"]);
+	$stmt2->bind_param("i", $data["parent"]);
+	$stmt3->bind_param("i", $previousData["parent"]);
+	$stmt4->bind_param("i", $previousData["parent"]);
+
+	if(
+		(!$stmt1->execute()) ||
+		(!$stmt2->execute()) ||
+		(!$stmt3->execute()) ||
+		(!$stmt4->execute())
+	){
+		echo "something wrong with DB";		
+		echo $stmt->error;
+		$stmt->close();
+		$conn->close();
+		http_response_code(400);
+		return;
+	}
 }
 
 
@@ -159,7 +194,7 @@ SQL;
 		$currentField
 	);
 	if(!$stmt->execute()){
-		echo "something wrog with DB";	
+		echo "something wrong with DB";	
 		echo $stmt->error;
 		$stmt->close();
 		$conn->close();
