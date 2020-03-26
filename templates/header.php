@@ -1,9 +1,11 @@
 <?php
 class Header{
 	private $status;
+	private $username;
 
 	function __construct($userInfo){
-		$this->status = isset($userInfo["status"]) ? $userInfo["status"] : "X";		
+		$this->status = isset($userInfo["status"]) ? $userInfo["status"] : "X";	
+		$this->username = $userInfo["username"];
 	}
 
 	function render(){
@@ -25,6 +27,7 @@ class Header{
 		echo <<<HTML
 		<header>
 			<div class="title">Thesaurus UK - {$this->status}</div>
+			<div class="userInfo">logged as:<br>{$this->username}</div>
 			<div class="menu">
 				{$menuButtonsToRender}
 			</div>

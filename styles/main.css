@@ -110,7 +110,7 @@ input:focus, textarea:focus, select:focus, button:focus{
 
 header{
 	display:grid;
-	grid-template-columns: 1fr auto;
+	grid-template-columns: 1fr auto auto;
 
 	background: #2E3192;	
 	box-shadow: #0008 0 5px 5px;
@@ -124,6 +124,13 @@ header .title{
 	font-size: 60px;
     line-height: 100px;
     color: #fff;
+}
+
+header .userInfo{
+    font-size: 13px;
+	text-align: right;
+    margin: 18px 20px auto 0;
+	color: #fff;
 }
 
 header .menu a{

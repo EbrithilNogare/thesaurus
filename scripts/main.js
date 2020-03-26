@@ -27,7 +27,10 @@ const Thesaurus = {
 		history.pushState({word: this.id}, "", "?word="+this.id);
 		
 		$("wordID").innerText = "ID: " + this.id;
-		$("wordParent").innerText = `parent: ${this.parent.label}`;
+
+		$("wordParentId").value = this.parent.id;
+		$("wordParentLabel").innerText = this.parent.label;
+
 		$("wordLastUpdate").innerText = "last update: " + this.lastUpdate;
 		
 		$("en:label").value = this.original.label;
@@ -94,6 +97,7 @@ function loadLeaf(id){
 	fetch("API/getTranslation.php/?id="+id)
 		.then(result=>result.json())
 		.then(json=>{
+			console.log(json);
 			Thesaurus.id = json["id"];	
 			Thesaurus.parent.id = json["parentId"];		
 			Thesaurus.parent.label = json["parentLabel"];			
@@ -107,7 +111,7 @@ function loadLeaf(id){
 						parent: json["parent"][childId],
 					}
 				}
-			}			
+			}
 			
 			Thesaurus.original.label = json["en"].label;
 			Thesaurus.original.definition = json["en"].definition;
@@ -129,7 +133,7 @@ function updateTranslation(){
 
 	const postBody = {
 		id: Thesaurus.id,
-		parent: Thesaurus.parent.id,
+		parent: $("wordParentId").value,
 		original: {
 			lang: Thesaurus.original.language,
 			label: $("en:label").value,
@@ -154,17 +158,15 @@ function updateTranslation(){
 }
 
 function changeParent(){
-	let newID = prompt("write ID of new parent", Thesaurus.parent.id);
+	let newID = prompt("write ID of new parent", $("wordParentId").value);
 	if(newID == null)
 		return;
 	
 	fetch("API/getTranslation.php/?id="+newID)
 		.then(result=>result.json())
 		.then(json=>{
-			Thesaurus.parent.id = json["id"];	
-			Thesaurus.parent.label = json["en"].label;	
-
-			$("wordParent").innerText = "parent: " + Thesaurus.parent.label;
+			$("wordParentId").value = json["id"];
+			$("wordParentLabel").innerText = json["en"].label;
 		})
 		.catch(error => console.error(`loadLeaf => ${error.message}`));
 }

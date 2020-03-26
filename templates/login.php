@@ -116,7 +116,7 @@ SQL;
 		$conn = connectToDB();
 	
 		$sql = <<<SQL
-			SELECT ID, status, sessionExpiration
+			SELECT ID, status, sessionExpiration, username
 			FROM `users`
 			WHERE `session` = ?
 SQL;
@@ -135,6 +135,7 @@ SQL;
 			$toReturn = true;
 			$row = $result->fetch_assoc();
 			$this->userInfo["status"] = $row["status"];
+			$this->userInfo["username"] = $row["username"];
 			$this->userInfo["id"] = $row["ID"];
 			if(strtotime($row["sessionExpiration"])<=time()){
 				$toReturn = false;

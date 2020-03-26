@@ -49,8 +49,9 @@
 				$admin->render();
 				break;
 			default:
-				$navigation = new Navigation();
-				$translator = new Translator();
+				$wordId = isset($_GET["word"]) ? $_GET["word"] : 0;
+				$navigation = new Navigation($wordId);
+				$translator = new Translator($wordId);
 				$navigation->render();
 				$translator->render();
 				break;

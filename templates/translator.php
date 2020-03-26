@@ -25,8 +25,9 @@ class Translator{
 					ID:
 				</div>
 				
-				<div class="block" id="wordParent" onclick="changeParent()">
-					parent:
+				<div class="block" onclick="changeParent()">
+					<input type="hidden" id="wordParentId">
+					parent: <span id="wordParentLabel"></span>
 				</div>
 				
 				<div class="block" id="wordLastUpdate" onclick="showLastUpdates()">
