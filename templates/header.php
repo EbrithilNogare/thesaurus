@@ -5,7 +5,7 @@ class Header{
 
 	function __construct($userInfo){
 		$this->status = isset($userInfo["status"]) ? $userInfo["status"] : "X";	
-		$this->username = $userInfo["username"];
+		$this->username = isset($userInfo["username"]) ? $userInfo["username"] : null;
 	}
 
 	function render(){
@@ -22,12 +22,15 @@ class Header{
 			case "U":
 				$menuButtonsToRender.=$menuButtons['logout']."\n";
 		}
+		$logInfo = "";
+		if($this->username != null)
+			$logInfo = "logged as:<br>{$this->username}";
 
 
 		echo <<<HTML
 		<header>
-			<div class="title">Thesaurus UK - {$this->status}</div>
-			<div class="userInfo">logged as:<br>{$this->username}</div>
+			<div class="title">Thesaurus UK</div>
+			<div class="userInfo">$logInfo</div>
 			<div class="menu">
 				{$menuButtonsToRender}
 			</div>

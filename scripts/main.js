@@ -55,6 +55,8 @@ const Thesaurus = {
 		
 		leafCollDOM.parentNode.getElementsByTagName("svg")[0].style = "transform: rotate(90deg);";
 
+		const virutalDOM = [];
+		const sortedDOM = [];
 		for(let childId in this.childs){
 			const node = document.createElement("div");
 			node.setAttribute("class", "treeBlock");
@@ -81,8 +83,18 @@ const Thesaurus = {
 				node.appendChild(collectionNode);
 			}
 
-			leafCollDOM.appendChild(node);
+			sortedDOM.push(this.childs[childId].title.toLowerCase());
+			virutalDOM[this.childs[childId].title.toLowerCase()] = node;
 		}
+
+		sortedDOM.sort();
+
+		leafCollDOM.innerHTML = "";
+
+		for(let id in sortedDOM){
+			leafCollDOM.appendChild(virutalDOM[sortedDOM[id]]);
+		}
+
 	}
 }
 
@@ -97,21 +109,19 @@ function loadLeaf(id){
 	fetch("API/getTranslation.php/?id="+id)
 		.then(result=>result.json())
 		.then(json=>{
-			console.log(json);
 			Thesaurus.id = json["id"];	
 			Thesaurus.parent.id = json["parentId"];		
 			Thesaurus.parent.label = json["parentLabel"];			
 			Thesaurus.lastUpdate = json["lastUpdate"];
 			
 			Thesaurus.childs = [];
-			if(json["childs"].length != 0){
-				for(let childId in json["childs"]){
-					Thesaurus.childs[childId] = {
-						title: json["childs"][childId],
-						parent: json["parent"][childId],
-					}
+			for(let childId in json["childs"]){
+				Thesaurus.childs[childId] = {
+					title: json["childs"][childId],
+					parent: json["parent"][childId],
 				}
 			}
+
 			
 			Thesaurus.original.label = json["en"].label;
 			Thesaurus.original.definition = json["en"].definition;

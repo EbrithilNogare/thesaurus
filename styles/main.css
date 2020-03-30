@@ -237,8 +237,15 @@ button:hover{
 	box-shadow: #0008 0px 4px 4px -1px;
 	
 	cursor: pointer;
+	user-select: none;
 	
 	padding: 8px;
+}
+.treeHeader:hover{
+	background: #2996e4;
+}
+.treeHeader:active{
+	background: #0d78c9;
 }
 
 .treeHeader svg{

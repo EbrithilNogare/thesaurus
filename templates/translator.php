@@ -1,19 +1,35 @@
 <?php
 
-include_once("common/connectToDB.php");
+include_once(dirname(__DIR__)."/common/connectToDB.php");
+include_once(dirname(__DIR__)."/common/getTranslation.php");
 
 class Translator{
-	function __construct(){
-
+	private $wordToLoad;
+	private $translationData;
+	function __construct($wordId){
+		$wordToLoad = $wordId;
+		$this->translationData = getTranslation($wordId);
+		if(!$this->translationData["success"]){
+			// todo something ??
+		}
 	}
+
+	
 
 	function render(){
 		$cachedSVG = file_get_contents("images/icons/cached.svg");
 		$sendSVG = file_get_contents("images/icons/send.svg");
+		$lastUpdateRendered = $this->translationData["lastUpdate"]["username"];
+		if($this->translationData["lastUpdate"]["username"] != "")
+			$lastUpdateRendered .= "({$this->translationData['lastUpdate']['username']})";
 
 		echo <<<HTML
 		<section class="translation">
-			{$this->translatorFieldset("","","", "en")}
+			{$this->translatorFieldset(
+				$this->translationData["translations"]["en"]["label"],
+				$this->translationData["translations"]["en"]["definition"],
+				$this->translationData["translations"]["en"]["scope"],
+				"en")}
 
 			<div class="actions">
 				<button onclick="updateTranslation()">
@@ -22,16 +38,16 @@ class Translator{
 				</button>
 				
 				<div class="block" id="wordID">
-					ID:
+					ID: {$this->translationData["id"]}
 				</div>
 				
 				<div class="block" onclick="changeParent()">
-					<input type="hidden" id="wordParentId">
-					parent: <span id="wordParentLabel"></span>
+					<input type="hidden" id="wordParentId" value="{$this->translationData["parent"]["id"]}">
+					parent: <span id="wordParentLabel">{$this->translationData["parent"]["label"]}</span>
 				</div>
 				
 				<div class="block" id="wordLastUpdate" onclick="showLastUpdates()">
-					last update:
+					last update: {$lastUpdateRendered}
 				</div>
 								
 				<button onclick="Thesaurus.updateTranslationView()">
@@ -40,7 +56,11 @@ class Translator{
 				</button>
 			</div>
 
-			{$this->translatorFieldset("","","", "cs")}
+			{$this->translatorFieldset(
+				$this->translationData["translations"]["cs"]["label"],
+				$this->translationData["translations"]["cs"]["definition"],
+				$this->translationData["translations"]["cs"]["scope"],
+				"cs")}
 
 		</section>
 HTML;

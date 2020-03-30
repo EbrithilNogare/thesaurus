@@ -1,6 +1,7 @@
 <?php
 
 include_once(dirname(__DIR__)."/common/connectToDB.php");
+include_once(dirname(__DIR__)."/common/getTranslation.php");
 include_once(dirname(__DIR__)."/templates/login.php");
 
 $login = new Login(); 
@@ -21,141 +22,32 @@ if(
 }
 
 $id = intval($_GET["id"]);
+
+
+$translation = getTranslation($id);
+if(!$translation["success"]){
+	echo $translation["message"];		
+	http_response_code(400);
+	return;
+}
+
+
 $responseData = [];
 $responseData['id'] = $id;
-$responseData['lastUpdate'] = "";
-$responseData['childs'] = [];
-$responseData['parent'] = [];
 
-$conn = connectToDB();
+if($translation["lastUpdate"]["username"]!="")
+	$responseData['lastUpdate'] = "{$translation["lastUpdate"]["username"]} ({$translation["lastUpdate"]["time"]})";
+else
+	$responseData['lastUpdate'] = "";
 
-// get word and translation
-$stmt = $conn->prepare("SELECT *  FROM `translations` WHERE `word_id` = ?");
-$stmt->bind_param("i", $id);
+$responseData['childs'] = $translation["childs"];
+$responseData['parent'] = $translation["childsParents"];
+$responseData['parentId'] = $translation['parent']['id'];
+$responseData['parentLabel'] = $translation['parent']['label'];
 
-if(!$stmt->execute()){
-	echo "something wrong with DB";	
-	echo $stmt->error;
-	$stmt->close();
-	$conn->close();
-	http_response_code(400);
-	return;
+foreach ($translation["translations"] as $key => $value){
+	$responseData[$key] = $value;
 }
 
-$result = $stmt->get_result();
-if($result->num_rows === 0){
-	echo "word not found";
-	$stmt->close();
-	$conn->close();
-	http_response_code(400);
-	return;
-}
-
-while($row = $result->fetch_assoc()) {
-	$tempArray = [];
-	$tempArray['label'] = $row['label'];
-	$tempArray['definition'] = $row['definition'];
-	$tempArray['scope'] = $row['scope'];
-  	$responseData[$row['language']] = $tempArray;
-}
-
-
-// get paarent ID and name
-$sql = <<<SQL
-	SELECT parent, label
-	FROM words
-	LEFT JOIN translations
-	ON translations.word_id = words.parent
-	WHERE `ID` = ? AND `language` = "en"
-SQL;
-
-$stmt = $conn->prepare($sql);
-$stmt->bind_param("i", $id);
-
-if(!$stmt->execute()){
-	echo "something wrong with DB";	
-	echo $stmt->error;
-	$stmt->close();
-	$conn->close();
-	http_response_code(400);
-	return;
-}
-
-$result = $stmt->get_result();
-if($result->num_rows === 0){
-	echo "word not found";
-	$stmt->close();
-	$conn->close();
-	http_response_code(400);
-	return;
-}
-
-$row = $result->fetch_assoc();
-$responseData['parentId'] = $row['parent'];
-$responseData['parentLabel'] = $row['label'];
-
-
-// get childs for tree view
-$sql = <<<SQL
-	SELECT ID, label, childs
-	FROM words
-	LEFT JOIN translations
-	ON translations.word_id = words.ID
-	WHERE `parent` = ? AND language = 'en'
-	ORDER BY translations.label ASC	
-SQL;
-
-$stmt = $conn->prepare($sql);
-$stmt->bind_param("i", $id);
-
-if(!$stmt->execute()){
-	echo "something wrong with DB";
-	echo $stmt->error;
-	$stmt->close();
-	$conn->close();
-	http_response_code(400);
-	return;
-}
-
-$result = $stmt->get_result();
-if($result->num_rows != 0){
-	while($row = $result->fetch_assoc()) {
-		$responseData['childs'][$row['ID']] = $row['label'];
-		$responseData['parent'][$row['ID']] = $row['childs'] == "1";
-	}
-}
-
-
-// get last update of this word
-$sql = <<<SQL
-	SELECT username, time
-	FROM `log`
-	LEFT JOIN `users`
-	ON `log`.`user` = `users`.`ID`
-	WHERE `word_id` = ?  
-	ORDER BY `log`.`time` DESC
-	LIMIT 1
-SQL;
-
-$stmt = $conn->prepare($sql);
-$stmt->bind_param("i", $id);
-
-if(!$stmt->execute()){
-	echo "something wrong with DB";		
-	echo $stmt->error;
-	$stmt->close();
-	$conn->close();
-	http_response_code(400);
-	return;
-}
-
-$result = $stmt->get_result();
-if($result->num_rows != 0){
-	$row = $result->fetch_assoc();
-	$responseData['lastUpdate'] = "${row['username']} (${row['time']})";	
-}
-
-$stmt->close();
-$conn->close();
 
 echo json_encode($responseData);
